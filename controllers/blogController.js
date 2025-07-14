@@ -16,7 +16,7 @@ exports.createBlog = async (req, res) => {
     const result = await cloudinary.uploader.upload(req.file.path, {
       folder: 'blogs'
     });
-console.log(result,"resultresultresultresult");
+// console.log(result,"resultresultresultresult");
 
     const newBlog = new Blog({
       image: result.secure_url,
@@ -112,3 +112,27 @@ exports.getAllBlogs = async (req, res) => {
   }
 };
 
+// Get All Blogs (for Admin Panel - no filtering)
+exports.getAllBlogsForAdmin = async (req, res) => {
+  try {
+    const blogs = await Blog.find().sort({ createdAt: -1 });
+    res.status(200).json({ success: true, blogs });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
+
+// Get Single Blog by ID
+exports.getBlogById = async (req, res) => {
+  try {
+    const blog = await Blog.findById(req.params.id);
+    if (!blog) {
+      return res.status(404).json({ success: false, message: 'Blog not found' });
+    }
+    res.status(200).json({ success: true, data: blog });
+  } catch (err) {
+    console.error('Error in getBlogById:', err);
+    res.status(500).json({ success: false, message: err.message });
+  }
+};

@@ -6,7 +6,9 @@ const {
   getAllBlogs,
   getBlogBySlug,
   updateBlog,
-  deleteBlog
+  deleteBlog,
+  getAllBlogsForAdmin,
+  getBlogById
 } = require('../controllers/blogController');
 
 // Create
@@ -23,5 +25,11 @@ router.put('/:id', upload.single('image'), updateBlog);
 
 // Delete by ID
 router.delete('/:id', deleteBlog);
+
+// For admin panel
+router.get('/admin/all', getAllBlogsForAdmin); 
+
+// Get single blog by ID
+router.get('/getBlogById/:id', getBlogById) ;
 
 module.exports = router;
